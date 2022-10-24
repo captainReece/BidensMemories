@@ -1,0 +1,35 @@
+body {
+    background-color: brown;
+}
+
+h1 {
+    text-align: center;
+}
+
+#game {
+   
+    height: 930px;
+    width: 1240px;
+
+    margin-left: 10px;
+}
+
+#start {
+    display: block;
+    position: relative;
+    text-align: center;
+}
+
+#restart {
+    display: block;
+    position: relative;
+    text-align: center;
+}
+
+td {
+    border-color: blue;
+    border-style: solid;
+    height: 300px;
+    width: 300px;
+}
+

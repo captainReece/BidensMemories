@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Creepy Memory Game</title>
+</head>
+<body>
+     <h1>Remember Creepy Uncle Joe</h1>
+
+     <div id="game">
+        <table id="gameTable">
+            <tr>
+                <td id="0"></td>
+                <td id="1"></td>
+                <td id="2"></td>
+                <td id="3"></td>
+            </tr>
+            <tr>
+                <td id="4"></td>
+                <td id="5"></td>
+                <td id="6"></td>
+                <td id="7"></td>
+            </tr>
+            <tr>
+                <td id="8"></td>
+                <td id="9"></td>
+                <td id="10"></td>
+                <td id="11"></td>
+            </tr>
+        </table>
+
+
+     </div>
+<br>
+
+
+    <div id="restart"><button type="submit">Restart</button></div>
+
+    <script type="text/javascript">
+
+        var buttonArray = [];
+        var imageArray = [];
+        var incorrect = 0;
+        var correct = 0;
+        var failSounds = ["theGreatNegro.mp3", "whenIwas.mp3", "freeZone.mp3"];
+        var winSound = "allIGottaDo.mp3";
+
+        function soundPicker() {
+            var soundNumber = Math.floor(Math.random() * 3);
+            var sound = failSounds[soundNumber];
+            return sound;
+        }
+   
+    function identifyButton(btn) {
+           
+           var buttonIdentity = document.getElementById(btn.id).getAttribute('id');
+           return(buttonIdentity);
+           
+    }
+
+    function identifyImage(btn) {
+        var imageIdentity = document.getElementById(btn.id).firstChild.getAttribute('src');
+        return(imageIdentity.toString());
+    }
+
+
+    function showImage(btn) {
+        var buttonIdentity = document.getElementById(btn.id);
+           
+           
+           buttonIdentity.firstChild.style.opacity = 1;
+    }
+
+    function hideImage(btn) {
+        var buttonIdentity = document.getElementById(btn);
+        
+           
+           buttonIdentity.firstChild.style.opacity = 0;
+    }
+    
+    
+    function guess(buttonPressed) {
+        var buttonIdentity = identifyButton(buttonPressed);
+        var imageIdentity = identifyImage(buttonPressed);
+        showImage(buttonPressed);
+       buttonArray.push(buttonIdentity); 
+       imageArray.push(imageIdentity);
+
+      
+       if(imageArray.length == 2) {
+       
+
+       determineMatch();
+        }
+       
+    }
+
+
+    function determineMatch() {
+        
+
+      if(imageArray[0] == imageArray[1]) {
+            alert("Wow Joe, great job. You have been working on your reading teleprompter skills!");
+            correct++;
+            if(correct == 6){
+                alert('Congrats uncle Joe. I suppose you can be prez for another week.');
+                playSound(winSound);
+            }
+            
+        } else {
+            
+            incorrect++;
+       
+            alert("Uncle Joe, you've gotten it wrong " + incorrect + " times so far. That's not how we remember it.");
+            playSound(soundPicker(failSounds));
+            hideTiles(buttonArray[0], buttonArray[1]);
+          
+            
+    } 
+    if(incorrect == 6) {
+                alert("Ok uncle Joe that's it. Six times to forget is enough. Apparently you've even forgotten your name, so let's go Brandon");
+                window.location.reload();
+            }
+            
+            buttonArray = [];
+            imageArray = [];
+
+}
+
+async function sleep(seconds){
+    return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
+    
+}
+
+async function hideTiles(btn1, btn2) {
+   
+    await sleep(1);
+    
+   hideImage(btn1);
+   hideImage(btn2);
+   
+
+}
+
+function playSound(url) {
+  var ourAudio = document.createElement('audio'); // Create a audio element using the DOM
+  ourAudio.style.display = "none"; // Hide the audio element
+  ourAudio.src = url; // Set resource to our URL
+  ourAudio.autoplay = true; // Automatically play sound
+  ourAudio.onended = function() {
+    this.remove(); // Remove when played.
+  };
+  document.body.appendChild(ourAudio);
+}
+
+
+</script>
+
+    <script src="app.js"></script>
+ 
+
+</body>
+</html>
